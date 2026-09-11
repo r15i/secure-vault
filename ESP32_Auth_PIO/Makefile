@@ -26,7 +26,6 @@ IP_ARG     = $(if $(DEVICE_IP),--ip $(DEVICE_IP),)
 
 CXX ?= g++
 
-# generate_report.py runs from the project root, so a relative PYTHON (such as
 # ../.venv/bin/python) would resolve against the wrong directory after `cd ..`.
 ABS_PYTHON := $(if $(findstring /,$(PYTHON)),$(abspath $(PYTHON)),$(PYTHON))
 
@@ -130,7 +129,6 @@ smoke-test:
 	@$(MAKE) clean-results PYTHON=$(PYTHON)
 	@$(PYTHON) benchmark.py --k 200 --ecc-k 5 --cycles 10 || true
 	@$(MAKE) plot PYTHON=$(PYTHON) || true
-	@cd .. && $(ABS_PYTHON) generate_report.py --allow-mock || true
 	@echo "Stopping mock device..."
 	@kill `cat mock.pid` 2>/dev/null || true
 	@rm -f mock.pid
@@ -153,10 +151,6 @@ plot:
 # Render the final report. Both formats come from report_content.py, which reads
 # its numbers out of the newest dataset -- so `plot` runs first to make sure the
 # charts it embeds match that dataset.
-report: plot
-	cd .. && $(ABS_PYTHON) generate_report.py
-
-# Run the python mock server
 mock:
 	$(PYTHON) mock_device.py
 
