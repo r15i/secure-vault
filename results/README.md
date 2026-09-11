@@ -4,7 +4,6 @@ One directory per run, named by its UTC run id (`YYYYMMDDTHHMMSSZ`). Contents ar
 generated and are not tracked in git — regenerate them rather than committing them:
 
 ```bash
-cd ESP32_Auth_PIO
 make benchmark            # writes results/<run-id>/, needs the device
 make plot                 # re-renders charts + report.md from the newest dataset
 ```
