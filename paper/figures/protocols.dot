@@ -1,0 +1,52 @@
+digraph Protocols {
+    // Short labels on purpose: four clusters side by side get scaled down hard
+    // to fit the text width, and long lines end up unreadable in the PDF.
+    // Notation (c, k, p, C1, r1, t1, k1, M3, ...) is defined in the report's
+    // "What the four protocols do" table; keep the two consistent.
+    rankdir=TB;
+    dpi=200;
+    bgcolor="white";
+    nodesep=0.22;
+    ranksep=0.38;
+    node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=15,
+          fillcolor="#ffffff", color="#c9c8c2", margin="0.14,0.09"];
+    edge [fontname="Helvetica", fontsize=13, color="#52514e", arrowsize=0.8];
+
+    subgraph cluster_cl {
+        label="Classical AES-128\n2 AES blocks on device";
+        fontname="Helvetica-Bold"; fontsize=16; style=dashed; color="#8a8880"; margin=12;
+        c0 [label="dev → host\nc", fillcolor="#e8f3e8"];
+        c1 [label="host → dev\nEnc(k, c) ‖ c′", fillcolor="#e3eefb"];
+        c2 [label="dev: Dec, compare\nEnc(k, c′) → host", fillcolor="#e8f3e8"];
+        c0 -> c1 -> c2;
+    }
+
+    subgraph cluster_srp {
+        label="Rotating password\n3 AES blocks on device";
+        fontname="Helvetica-Bold"; fontsize=16; style=dashed; color="#8a8880"; margin=12;
+        p0 [label="dev → host\nc", fillcolor="#e8f3e8"];
+        p1 [label="host → dev\nEnc(p, c) ‖ c′ ‖ Enc(p, p′)", fillcolor="#e3eefb"];
+        p2 [label="dev: Dec, compare\nEnc(p, c′) → host, Dec → p′", fillcolor="#e8f3e8"];
+        p3 [label="both: p ← p′", fillcolor="#fdf0e8"];
+        p0 -> p1 -> p2 -> p3;
+    }
+
+    subgraph cluster_sv {
+        label="Secure Vault\n6 AES blocks + HMAC + rotation";
+        fontname="Helvetica-Bold"; fontsize=16; style=dashed; color="#8a8880"; margin=12;
+        s0 [label="dev → host\nC1, r1", fillcolor="#e8f3e8"];
+        s1 [label="host → dev\nM3 = Enc(k1, r1‖t1‖C2‖r2)", fillcolor="#e3eefb"];
+        s2 [label="dev → host\nM4 = Enc(k2⊕t1, r2‖t2)", fillcolor="#e8f3e8"];
+        s3 [label="both rotate the vault\nwith HMAC(r1, vault)", fillcolor="#fdf0e8"];
+        s0 -> s1 -> s2 -> s3;
+    }
+
+    subgraph cluster_ecc {
+        label="ECC (ECDSA P-256)\n1 sign + 1 verify on device";
+        fontname="Helvetica-Bold"; fontsize=16; style=dashed; color="#8a8880"; margin=12;
+        e0 [label="dev → host\nc", fillcolor="#e8f3e8"];
+        e1 [label="host → dev\nc′ ‖ Sig(host, c)", fillcolor="#e3eefb"];
+        e2 [label="dev: verify\nSig(dev, c′) → host", fillcolor="#e8f3e8"];
+        e0 -> e1 -> e2;
+    }
+}

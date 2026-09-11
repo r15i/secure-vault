@@ -1,0 +1,46 @@
+digraph Testbed {
+    // Three columns only. A wider graph has to be scaled down to the text width,
+    // and its labels stop being readable; keeping the node columns to three is
+    // what holds the aspect ratio near square.
+    rankdir=LR;
+    dpi=200;
+    bgcolor="white";
+    nodesep=0.28;
+    ranksep=0.75;
+    node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=13,
+          fillcolor="#f7f7f5", color="#c9c8c2", margin="0.18,0.12"];
+    edge [fontname="Helvetica", fontsize=11, color="#52514e"];
+
+    subgraph cluster_host {
+        label="Host PC  (Linux, Python 3)";
+        labelloc=t; fontname="Helvetica-Bold"; fontsize=15;
+        style=dashed; color="#8a8880"; margin=14;
+        client  [label="test_client.py\nreal protocol peer", fillcolor="#e3eefb"];
+        bench   [label="benchmark.py\ndrives the run", fillcolor="#e3eefb"];
+        analyze [label="analyze.py\ncharts + report", fillcolor="#e3eefb"];
+        { rank=same; client; bench; analyze; }
+        bench -> client  [style=dotted, label=" drives "];
+        bench -> analyze [style=dotted, label=" dataset "];
+    }
+
+    subgraph cluster_dev {
+        label="ESP32-C3 SuperMini  ·  160 MHz RISC-V\nhardware AES/SHA, software P-256";
+        labelloc=t; fontname="Helvetica-Bold"; fontsize=15;
+        style=dashed; color="#8a8880"; margin=14;
+        srv   [label="WebServer\nport 80", fillcolor="#e8f3e8"];
+        cl    [label="Classical\nAES-128 PSK"];
+        sv    [label="Secure Vault\n16-key rotating vault"];
+        ecc   [label="ECC\nECDSA P-256"];
+        batch [label="/api/benchmark\nK reps, 1 timed region", fillcolor="#fdf0e8"];
+        tele  [label="/api/energy\nper-phase µs stats", fillcolor="#fdf0e8"];
+        { rank=same; cl; sv; ecc; batch; tele; }
+        srv -> cl; srv -> sv; srv -> ecc; srv -> batch; srv -> tele;
+    }
+
+    // The two measurement paths, the only coloured edges: every "cross-check"
+    // in this report is these two arrows agreeing or not.
+    client -> srv [label=" auth cycles\n (WiFi) ",
+                   penwidth=2.4, color="#2a78d6", fontcolor="#2a78d6"];
+    bench  -> srv [label=" batch +\n telemetry ", dir=both,
+                   penwidth=2.4, color="#eb6834", fontcolor="#eb6834"];
+}
