@@ -19,10 +19,10 @@ Every number and chart in the accompanying report is regenerated directly from t
 ```bash
 # Clone the repository
 git clone https://github.com/r15i/secure-vault.git
-cd secure-vault/ESP32_Auth_PIO
+cd secure-vault
 
 # Configure WiFi credentials
-cp src/config.example.h src/config.h   # set WIFI_SSID and WIFI_PASSWORD
+cp ESP32_Auth_PIO/src/config.example.h ESP32_Auth_PIO/src/config.h   # set WIFI_SSID and WIFI_PASSWORD
 
 # Set up environment and flash device
 make venv                              # uv venv + install host deps
