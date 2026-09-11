@@ -1,0 +1,17 @@
+# Host-side tooling dependencies (test client + benchmark analysis).
+#
+#   make venv                 # uv venv + uv pip install -r requirements.txt
+#   make test
+#
+# Or without uv:
+#   python3 -m venv ../.venv && ../.venv/bin/pip install -r requirements.txt
+#
+# PlatformIO is NOT listed here: it is a toolchain, not a project dependency.
+# It lives in its own environment (../.venv_pio) and the Makefile finds it.
+
+requests>=2.31            # HTTP client for the device API
+pycryptodome>=3.20        # AES-128 ECB, HMAC-SHA256, and ECDSA P-256 (Crypto.Signature.DSS)
+pandas>=2.0               # benchmark result dataset handling
+matplotlib>=3.7           # comparison charts
+python-docx>=1.1          # renders the report into the course .docx template
+flask>=3.0                # mock_device.py only (`make mock`), never needed with real hardware
