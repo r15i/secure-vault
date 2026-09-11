@@ -153,7 +153,6 @@ if __name__ == "__main__":
 the banner at the top of this file. The current path is:
 
 ```bash
-cd ESP32_Auth_PIO
 make benchmark
 make analyze CSV=results/<run-id>/benchmark.csv
 ```

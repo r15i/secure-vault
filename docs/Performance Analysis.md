@@ -8,10 +8,8 @@ this project once came to publish the reference paper's own values as though it 
 measured them.
 
 ```bash
-cd ESP32_Auth_PIO
 make benchmark DEVICE_IP=<ip>   # run against the board -> results/<run-id>/
 make plot                       # re-render charts + report.md from the newest dataset
-make report                     # rebuild paper/Final_Report.{docx,pdf}
 ```
 
 ## Before trusting any figure
